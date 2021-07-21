@@ -23,13 +23,13 @@ const handleErrorsSignup = (err) => {
 }
 
 const handleErrorsLogin = (err) => {
-    let errors = {email:'', password: ''};
+    let errors = {username:'', password: ''};
 
     if(err.message==='incorrect username'){
-        errors.email = 'that username is not registered'
+        errors.username = 'this username is not registered'
     }
     if(err.message==='incorrect password'){
-        errors.password = 'that password is incorrect'
+        errors.password = 'this password is incorrect'
     }
 
     return errors
@@ -56,15 +56,16 @@ module.exports.login_post = async (req, res) => {
 
         const user = await User.login(username, password)
         //creating token
-        jwt.sign({user}, process.env.JWT_SIGN, {expiresIn:'30s'}, (err, token) => { //'1h'
+        jwt.sign({user}, process.env.JWT_SIGN, {expiresIn:'1h'}, (err, token) => {
             res.status(200).json({
                 user,
                 token
             })
         })
         //on the front end, save token to localStorage
-        //AFTER receiving token, REDIRECTING to home page
-        //home page is protected with a middleware (protectRoute)
+        //AFTER receiving token, REDIRECTING to map page
+        //map page is NOT protected with a middleware (protectRoute), only protected on front end
+        //but CRUD methods are protected by the 2 middlewares!!!
         //on every request, attach the token to the request header somehow (utánanézni)
         //https://stackoverflow.com/questions/50536025/save-jwt-to-local-storage
 
