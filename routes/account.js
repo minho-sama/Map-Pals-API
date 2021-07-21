@@ -1,14 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index');
-});
-
 const upload = require('../middlewares/post_img')
+
+//uploading image, and returning a file name which was created in middleware
 router.post('/profile', upload.single("file"), (req, res) => {
-  return res.json(req.file.filename)
+  return res.json({file_name: req.file.filename})
 }) 
 
 module.exports = router;

@@ -1,13 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+require('dotenv').config()
+const cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const accountRouter = require('./routes/account');
+const authRouter = require('./routes/auth');
 
-var app = express();
+const app = express();
+app.use(cors());
+
+//Set up mongoose connection
+const mongoose = require('mongoose');
+const connection = require("./db");
+const Grid = require("gridfs-stream");
+let gfs;
+connection()
+
+const conn = mongoose.connection
+conn.once("open", function () {
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection("photos");
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,7 +37,30 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/accounts', accountRouter);
+app.use('/', authRouter);
+
+//media routes for dsiplaying and deleting images (needs to be in app.js)
+//to get image: example in index.js
+app.get("/file/:filename", async (req, res) => {
+  try {
+      const file = await gfs.files.findOne({ filename: req.params.filename });
+      const readStream = gfs.createReadStream(file.filename);
+      readStream.pipe(res);
+  } catch (error) {
+      res.send("not found");
+  }
+});
+
+app.delete("/file/:filename", async (req, res) => {
+  try {
+      await gfs.files.deleteOne({ filename: req.params.filename });
+      res.send("success");
+  } catch (error) {
+      console.log(error);
+      res.send("An error occured.");
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

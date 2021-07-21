@@ -1,0 +1,31 @@
+### login (receiving token)
+POST http://localhost:3000/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "minh",
+    "password": "123"
+}
+
+### redirect to protected homepage after received token
+GET http://localhost:3000/protectedHomepageTest HTTP/1.1
+content-type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwZjg0NTNmNDVmZWQwMjc1ODA0NzY4MCIsInVzZXJuYW1lIjoibWluaCIsInBhc3N3b3JkIjoiJDJiJDEwJGFzeWlsZnF1TmpYYnRPOXpWNWgxaC44MklBRE5IRnAyZy9ZQVByU1ZwYkZNUmJFZzBGb2VTIiwiX192IjowfSwiaWF0IjoxNjI2OTAwMTUzLCJleHAiOjE2MjY5MDAxODN9.iRZ1TZ3P4JXFYr9NTeAA8C9bSUZZ5BRnx0V7fStRIB8
+
+### //not an email, short psw error
+POST http://localhost:3000/signup HTTP/1.1
+content-type: application/json
+
+{
+    "username": "minh",
+    "password": "123"
+}
+
+### //username already taken error
+POST http://localhost:3000/signup HTTP/1.1
+content-type: application/json
+
+{
+    "username": "minh",
+    "password": "123"
+}
