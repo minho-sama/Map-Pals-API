@@ -65,7 +65,7 @@ module.exports.login_post = async (req, res) => {
         //on the front end, save token to localStorage
         //AFTER receiving token, REDIRECTING to map page
         //map page is NOT protected with a middleware (protectRoute), only protected on front end
-        //but CRUD methods are protected by the 2 middlewares!!!
+        //but CRUD methods are protected by the 2 middlewares!!! (frontenden check for res.ok)
         //on every request, attach the token to the request header somehow (utánanézni)
         //https://stackoverflow.com/questions/50536025/save-jwt-to-local-storage
 
@@ -73,6 +73,4 @@ module.exports.login_post = async (req, res) => {
         const errors = handleErrorsLogin(err)
         res.status(400).json({errors})
     }
-    
-
 }

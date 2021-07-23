@@ -29,3 +29,18 @@ content-type: application/json
     "username": "minh",
     "password": "123"
 }
+
+### //creating marker
+POST http://localhost:3000/marker/create HTTP/1.1
+content-type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwZjg0NTNmNDVmZWQwMjc1ODA0NzY4MCIsInVzZXJuYW1lIjoibWluaCIsInBhc3N3b3JkIjoiJDJiJDEwJGFzeWlsZnF1TmpYYnRPOXpWNWgxaC44MklBRE5IRnAyZy9ZQVByU1ZwYkZNUmJFZzBGb2VTIiwiX192IjowfSwiaWF0IjoxNjI3MDU1NzI5LCJleHAiOjE2MjcwNTkzMjl9.L1Pkk10-UOieslky9Ty17Q7X1An3vgDPlxHmynHvxgY
+
+{
+    "user": "60f8453f45fed02758047680",
+    "lat": 49.44127,
+    "lng": 19.1636761,
+    "name":"protected marker post 2" ,
+    "description":"pls work 2" ,
+    "image_url":""
+
+}

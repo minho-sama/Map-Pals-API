@@ -9,6 +9,7 @@ const logger = require('morgan');
 const indexRouter = require('./routes/index');
 const accountRouter = require('./routes/account');
 const authRouter = require('./routes/auth');
+const markerRouter = require('./routes/marker');
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,8 @@ const connection = require("./db");
 const Grid = require("gridfs-stream");
 let gfs;
 connection()
+"https://github.com/aheckmann/gridfs-stream/issues/135"
+"https://stackoverflow.com/questions/59717140/how-to-replace-gridstore-to-gridfsbucket"
 
 const conn = mongoose.connection
 conn.once("open", function () {
@@ -39,8 +42,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/accounts', accountRouter);
 app.use('/', authRouter);
+app.use('/', markerRouter); //majd markert berakni elé, és kivenni route-okból
 
-//media routes for dsiplaying and deleting images (needs to be in app.js)
+
+//media routes for displaying and deleting images (needs to be in app.js)
 //to get image: example in index.js
 app.get("/file/:filename", async (req, res) => {
   try {
