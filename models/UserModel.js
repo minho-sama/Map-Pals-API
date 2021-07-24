@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 
 //VAGY elég egy update fetch, de akkor mindegyik kép neve így nézzen ki: userID-profile-img (marjereknél pedig markerID-place-img)
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     username: {
         type:String,
         required:[true, "Please enter a username"],
@@ -19,20 +19,20 @@ const userSchema = new mongoose.Schema({
     }
 })
 
-userSchema.post('save', function(doc, next){
+UserSchema.post('save', function(doc, next){
     console.log('new user was created and saved', doc)
     next()
 })
 
 //fire function before doc saved to db
-userSchema.pre('save', async function(next){
+UserSchema.pre('save', async function(next){
     const salt = await bcrypt.genSalt()
     this.password = await bcrypt.hash(this.password, salt)
     next()
 })
 
 //static method to log in user
-userSchema.statics.login = async function (username, password) { //no arrow functions because of "this"
+UserSchema.statics.login = async function (username, password) { //no arrow functions because of "this"
     const user = await this.findOne({username: username}) //if not found, user is undefined
     if(user){
         console.log(password, user.password)
@@ -47,6 +47,6 @@ userSchema.statics.login = async function (username, password) { //no arrow func
     throw Error('incorrect username')
 }
 
-const User = mongoose.model('user', userSchema)
+const User = mongoose.model('user', UserSchema)
 
 module.exports = User

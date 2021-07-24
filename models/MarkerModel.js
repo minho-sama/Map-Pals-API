@@ -1,10 +1,10 @@
  const mongoose = require('mongoose')
  const Schema = mongoose.Schema
 
-const markerSchema = new Schema({
+const MarkerSchema = new Schema({
     user: {
         type:Schema.Types.ObjectId, 
-        ref: 'User', 
+        ref: 'user', 
         required:true
     },
     lat:{type:Number, required:true},
@@ -26,12 +26,12 @@ const markerSchema = new Schema({
 
 })
 
-markerSchema
-    .virtual('data_formatted')
+MarkerSchema
+    .virtual('date_formatted')
     .get(function() {
         return this.post_date + 'formatted'
     })
 
-const Marker = mongoose.model('marker', markerSchema)
+const Marker = mongoose.model('marker', MarkerSchema)
 
 module.exports = Marker

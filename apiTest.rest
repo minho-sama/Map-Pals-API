@@ -44,3 +44,6 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6Ij
     "image_url":""
 
 }
+
+### //fetching markers
+GET http://localhost:3000/markers

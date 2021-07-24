@@ -9,11 +9,19 @@ const verifyToken = require('../middlewares/verifyToken')
 
 
 //getting all markers (majd megcsinálni úgy is, h csak friendekre, ne frontenden szűrj!)
-router.get('/markers', (req, res) => {
-
+//majd ha lesznek kommentek akkor populatelni!
+//nem kell verification, majd id alapján lesz úgyis
+router.get('/markers', async (req, res) => {
+    try {
+        const allMarkers = await Marker.find().populate('user', 'username')
+        return res.status(200).json(allMarkers)
+    } catch(err){
+        return res.status(403).json({err: err.message})
+    }
 })
 
 //commenteket is itt intézni, de ne egy route-on! előbb renderelni a markert a sidebarban, és useEffectel fetchelni commenteket sidebarban!
+//kell ez egyáltalán? amikor map-olom a markereket, úgyis ott van minden infó
 router.get('/marker/:id', (req, res) => {
 
 })
