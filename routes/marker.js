@@ -20,12 +20,6 @@ router.get('/markers', async (req, res) => {
     }
 })
 
-//commenteket is itt intézni, de ne egy route-on! előbb renderelni a markert a sidebarban, és useEffectel fetchelni commenteket sidebarban!
-//kell ez egyáltalán? amikor map-olom a markereket, úgyis ott van minden infó
-router.get('/marker/:id', (req, res) => {
-
-})
-
 router.post('/marker/create', extractToken, verifyToken, async (req, res) => {
     
     try{
@@ -35,11 +29,39 @@ router.post('/marker/create', extractToken, verifyToken, async (req, res) => {
             lng:req.body.lng,
             name: req.body.name,
             description: req.body.description,
-            image_url: req.body.img_url
+            imgUrl: req.body.imgUrl
         })
-        res.status(201).json(marker)
+        const populatedMarker = await marker.populate('user').execPopulate() //when user creates marker, sidebar immediately renders it, so it needs the user data
+        res.status(201).json(populatedMarker)
     } catch(err) {
         res.status(400).json({err: err.message})
+    }
+})
+
+//commenteket is itt intézni, de ne egy route-on! előbb renderelni a markert a sidebarban, és useEffectel fetchelni commenteket sidebarban!
+//kell ez egyáltalán? amikor map-olom a markereket, úgyis ott van minden infó
+// router.get('/marker/:id', (req, res) => {
+
+// })
+
+router.patch('/marker/:id/like', extractToken, verifyToken, async (req, res) => {
+    try{
+        const likedMarker = await Marker.updateOne({_id:req.params.id}, {$set:{
+            likes:req.body.likes
+        }})
+        return res.status(200).json(likedMarker)
+    } catch(err) {
+        res.status(403).json({err:err.message})
+    }
+})
+ 
+router.delete('/marker/:id/delete', extractToken, verifyToken, async (req, res) => {
+    console.log(req.params.id)
+    try{
+        const deletedMarker = await Marker.findByIdAndDelete(req.params.id)
+        res.status(200).json(deletedMarker)
+    } catch(err){
+        res.status(403).json({err: err.message})
     }
 })
 

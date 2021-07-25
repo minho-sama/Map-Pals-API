@@ -1,5 +1,8 @@
  const mongoose = require('mongoose')
  const Schema = mongoose.Schema
+ const {DateTime} = require('luxon')
+
+const opts = { toJSON: { virtuals: true } };
 
 const MarkerSchema = new Schema({
     user: {
@@ -13,23 +16,22 @@ const MarkerSchema = new Schema({
         type:String,
         required:true
     },
+    imgUrl: {
+        type:String,
+        default: "https://i.imgur.com/qBJ1H0r.jpg"
+    },
     description: {
         type:String,
         required:true
     },
-    img_url: {
-        type:String,
-        default: 'https://i.imgur.com/RPapTGV.png'
-    },
-    likes: [{type:Schema.Types.ObjectId, ref: 'User'}],
+    likes: [{type:Schema.Types.ObjectId, ref: 'user'}],
     post_date: {type:Date, default: Date.now}
-
-})
+}, opts)
 
 MarkerSchema
-    .virtual('date_formatted')
+    .virtual('post_date_formatted')
     .get(function() {
-        return this.post_date + 'formatted'
+        return DateTime.fromJSDate(this.post_date).toLocaleString(DateTime.DATE_MED)
     })
 
 const Marker = mongoose.model('marker', MarkerSchema)

@@ -3,7 +3,7 @@ POST http://localhost:3000/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "minh",
+    "username": "test",
     "password": "123"
 }
 
@@ -33,17 +33,30 @@ content-type: application/json
 ### //creating marker
 POST http://localhost:3000/marker/create HTTP/1.1
 content-type: application/json
-Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwZjg0NTNmNDVmZWQwMjc1ODA0NzY4MCIsInVzZXJuYW1lIjoibWluaCIsInBhc3N3b3JkIjoiJDJiJDEwJGFzeWlsZnF1TmpYYnRPOXpWNWgxaC44MklBRE5IRnAyZy9ZQVByU1ZwYkZNUmJFZzBGb2VTIiwiX192IjowfSwiaWF0IjoxNjI3MDU1NzI5LCJleHAiOjE2MjcwNTkzMjl9.L1Pkk10-UOieslky9Ty17Q7X1An3vgDPlxHmynHvxgY
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwZmRkNWJlYmViODU4MmI2NGU5MWJhMiIsInVzZXJuYW1lIjoidGVzdCIsInBhc3N3b3JkIjoiJDJiJDEwJHVtQkd4M3hCdUpHek1CLlkuUk84SGViSHhBTVlNVkVDWEhqb3JZa3hrZk9wR1VocWtJYUxhIiwiX192IjowfSwiaWF0IjoxNjI3MjQ4MDg3LCJleHAiOjE2MjcyNTE2ODd9.mBglKfAClOAFzLx31XcKeiUpiUrfJgUcF-KzWSxp9pY
 
 {
-    "user": "60f8453f45fed02758047680",
-    "lat": 49.44127,
+    "user": "60fdd5bebeb8582b64e91ba2",
+    "lat": 49.44007,
     "lng": 19.1636761,
-    "name":"protected marker post 2" ,
-    "description":"pls work 2" ,
-    "image_url":""
-
+    "name":"testmarker" ,
+    "description":"plzzzz work"
 }
 
 ### //fetching markers
 GET http://localhost:3000/markers
+
+### //deleting marker
+DELETE http://localhost:3000/marker/60fdb668bd7ef724907cf17f/delete HTTP/1.1
+content-type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwZjg0NTNmNDVmZWQwMjc1ODA0NzY4MCIsInVzZXJuYW1lIjoibWluaCIsInBhc3N3b3JkIjoiJDJiJDEwJGFzeWlsZnF1TmpYYnRPOXpWNWgxaC44MklBRE5IRnAyZy9ZQVByU1ZwYkZNUmJFZzBGb2VTIiwiX192IjowfSwiaWF0IjoxNjI3MjM5ODg5LCJleHAiOjE2MjcyNDM0ODl9.Y6uthlUSzOxKWCO8jsUWM-C_dd37gCRp7SeVJ4YWNlw
+
+
+### //liking a marker
+PATCH http://localhost:3000/marker/60fdd6af2d462f3aa060849e/like HTTP/1.1
+content-type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYwZmRkNWJlYmViODU4MmI2NGU5MWJhMiIsInVzZXJuYW1lIjoidGVzdCIsInBhc3N3b3JkIjoiJDJiJDEwJHVtQkd4M3hCdUpHek1CLlkuUk84SGViSHhBTVlNVkVDWEhqb3JZa3hrZk9wR1VocWtJYUxhIiwiX192IjowfSwiaWF0IjoxNjI3MjQ4MDg3LCJleHAiOjE2MjcyNTE2ODd9.mBglKfAClOAFzLx31XcKeiUpiUrfJgUcF-KzWSxp9pY
+
+{
+    "likes": ["60fdd5bebeb8582b64e91ba2"]
+}
