@@ -1,12 +1,10 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
+const {DateTime} = require('luxon')
 
-//user img_name-nél dupla fetch: előbb feltölti a képet, majd awaiteli 
-//a filename-t, majd azzal a file nammel updateli a user modelt
-
-//VAGY elég egy update fetch, de akkor mindegyik kép neve így nézzen ki: userID-profile-img (marjereknél pedig markerID-place-img)
-
-const UserSchema = new mongoose.Schema({
+const opts = { toJSON: { virtuals: true } };
+const UserSchema = new Schema({
     username: {
         type:String,
         required:[true, "Please enter a username"],
@@ -16,8 +14,16 @@ const UserSchema = new mongoose.Schema({
         type:String,
         required:[true, "Please enter a password"],
         minlength:[3, "minimum password length is 3 characters"]
-    }
-})
+    },
+    bookmarks: [{type:Schema.Types.ObjectId, ref: 'marker'}],
+    city: {type:String},
+    join_date: {type:Date, default:Date.now},
+    imgUrl: {type:String},
+    friends: [{type:Schema.Types.ObjectId, ref: 'user'}],
+    friendRequests: [{type:Schema.Types.ObjectId, ref: 'user'}]
+
+
+}, opts)
 
 UserSchema.post('save', function(doc, next){
     console.log('new user was created and saved', doc)
@@ -46,6 +52,12 @@ UserSchema.statics.login = async function (username, password) { //no arrow func
 
     throw Error('incorrect username')
 }
+
+UserSchema
+    .virtual('join_date_formatted')
+    .get(function() {
+        return DateTime.fromJSDate(this.join_date).toLocaleString(DateTime.DATE_MED)
+})
 
 const User = mongoose.model('user', UserSchema)
 

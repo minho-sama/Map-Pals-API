@@ -60,3 +60,12 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6Ij
 {
     "likes": ["60fdd5bebeb8582b64e91ba2"]
 }
+
+### //bookmark a marker
+PATCH http://localhost:3000/marker/60f8453f45fed02758047680/bookmark HTTP/1.1
+content-type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImJvb2ttYXJrcyI6W10sIl9pZCI6IjYwZmRkNWJlYmViODU4MmI2NGU5MWJhMiIsInVzZXJuYW1lIjoidGVzdCIsInBhc3N3b3JkIjoiJDJiJDEwJHVtQkd4M3hCdUpHek1CLlkuUk84SGViSHhBTVlNVkVDWEhqb3JZa3hrZk9wR1VocWtJYUxhIiwiX192IjowfSwiaWF0IjoxNjI3Mjk5MDUxLCJleHAiOjE2MjczMDI2NTF9.8Ii5k0GDkAdNFouE1g82bMH800KfvipBWWWOdQzrdNQ
+
+{
+    "bookmarks": ["60fd8616c6046133305cd1d6", "60fd7ca7c6046133305cd1d0"]
+}
