@@ -3,6 +3,7 @@ const router = express.Router();
 // const markerController = require('../controllers/markerControllers')
 const Marker = require('../models/MarkerModel')
 const User = require('../models/UserModel')
+const Comment = require('../models/CommentModel')
 
 //majd app.use-zal protectelni, nem egyesével!
 const extractToken = require('../middlewares/extractToken')
@@ -39,19 +40,28 @@ router.post('/marker/create', extractToken, verifyToken, async (req, res) => {
     }
 })
 
-//commenteket is itt intézni, de ne egy route-on! előbb renderelni a markert a sidebarban, és useEffectel fetchelni commenteket sidebarban!
-//kell ez egyáltalán? amikor map-olom a markereket, úgyis ott van minden infó lol
-// router.get('/marker/:id', (req, res) => {
-
-// })
-
-router.get('/marker/:id/comments', (req, res) => {
-    //populatelni a user fieldet, markert nem kell
-    //UGYANEZ DELETEBEN IS
+//get all comments for a marker
+router.get('/marker/:id/comments', async (req, res) => {
+    try{
+        const comments = await Comment.find({marker: req.params.id}).populate('user', 'username').sort({post_date:-1})
+        res.status(200).json(comments)
+    } catch(err){
+        res.status(400).json({err:err.message})
+    }
 })
 
-router.post('/marker/:id/comment/create', (req, res) => {
-
+//create comment
+router.post('/marker/:id/comment/create', extractToken, verifyToken, async (req, res) => {
+    try{
+        const newComment = await Comment.create({
+            marker: req.body.marker,
+            user: req.body.user,
+            content: req.body.content
+        })
+        res.status(200).json(newComment)
+    } catch(err){
+        res.status(400).json({err:err.message})
+    }
 })
 
 router.patch('/marker/:id/like', extractToken, verifyToken, async (req, res) => {

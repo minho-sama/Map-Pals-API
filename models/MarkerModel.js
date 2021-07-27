@@ -1,7 +1,8 @@
  const mongoose = require('mongoose')
  const Schema = mongoose.Schema
  const {DateTime} = require('luxon')
-
+ const formatDistance = require('date-fns/formatDistance')
+ 
 const opts = { toJSON: { virtuals: true } };
 
 const MarkerSchema = new Schema({

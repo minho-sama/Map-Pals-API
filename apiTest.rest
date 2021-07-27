@@ -69,3 +69,8 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImJvb2ttYX
 {
     "bookmarks": ["60fd8616c6046133305cd1d6", "60fd7ca7c6046133305cd1d0"]
 }
+
+### //get comments for a marker
+GET http://localhost:3000/marker/60fec1df7c57db3cccceb815/comments HTTP/1.1
+content-type: application/json
+

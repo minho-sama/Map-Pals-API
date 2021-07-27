@@ -53,11 +53,11 @@ UserSchema.statics.login = async function (username, password) { //no arrow func
     throw Error('incorrect username')
 }
 
-UserSchema
-    .virtual('join_date_formatted')
-    .get(function() {
-        return DateTime.fromJSDate(this.join_date).toLocaleString(DateTime.DATE_MED)
-})
+// UserSchema
+//     .virtual('join_date_formatted')
+//     .get(function() {
+//         return DateTime.fromJSDate(this.join_date).toLocaleString(DateTime.DATE_MED)
+// })
 
 const User = mongoose.model('user', UserSchema)
 
