@@ -64,6 +64,28 @@ router.post('/marker/:id/comment/create', extractToken, verifyToken, async (req,
     }
 })
 
+//delete comment
+router.delete('/marker/comment/:id/delete', extractToken, verifyToken, async (req, res) => {
+    try{
+        const deletedComment = await Comment.findByIdAndDelete(req.params.id)
+        res.status(200).json(deletedComment)
+    } catch(err){
+        res.status(400).json({err:err.message})
+    }
+})
+
+//like comment 
+router.patch('/marker/comment/:id/like', extractToken, verifyToken, async (req, res) => {
+    try{
+        const likedComment = await Comment.updateOne({_id:req.params.id}, {$set: {
+            likes: req.body.likes
+        }})
+        return res.status(200).json(likedComment)
+    }catch(err){
+        res.status(403).json({err:err.message})
+    }
+})
+
 router.patch('/marker/:id/like', extractToken, verifyToken, async (req, res) => {
     try{
         const likedMarker = await Marker.updateOne({_id:req.params.id}, {$set:{
@@ -91,7 +113,6 @@ router.patch('/marker/:id/bookmark', extractToken, verifyToken, async (req, res)
 })
  
 router.delete('/marker/:id/delete', extractToken, verifyToken, async (req, res) => {
-    console.log(req.params.id)
     try{
         const deletedMarker = await Marker.findByIdAndDelete(req.params.id)
         res.status(200).json(deletedMarker)
