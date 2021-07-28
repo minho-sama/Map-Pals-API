@@ -43,7 +43,6 @@ module.exports.signup_post = async (req, res) => {
             password
         })
         res.status(201).json({user})
-        //redirectelni usert login pagere, toastify: SIGNUP SUCCESSFUL
     }catch(err){
         const errors = handleErrorsSignup(err)
         res.status(400).json({errors})
@@ -56,21 +55,19 @@ module.exports.login_post = async (req, res) => {
 
         const user = await User.login(username, password)
         //creating token
-        jwt.sign({user}, process.env.JWT_SIGN, {expiresIn:'1h'}, (err, token) => {
+        jwt.sign({user}, process.env.JWT_SIGN, {expiresIn:'3h'}, (err, token) => {
             res.status(200).json({
                 user,
                 token
             })
         })
-        //on the front end, save token to localStorage
-        //AFTER receiving token, REDIRECTING to map page
-        //map page is NOT protected with a middleware (protectRoute), only protected on front end
-        //but CRUD methods are protected by the 2 middlewares!!! (frontenden check for res.ok)
-        //on every request, attach the token to the request header somehow (utánanézni)
-        //https://stackoverflow.com/questions/50536025/save-jwt-to-local-storage
 
     } catch(err){
         const errors = handleErrorsLogin(err)
         res.status(400).json({errors})
     }
+}
+
+module.exports.checkToken = (req, res) => {
+    res.status(200).json({msg: 'token verified'})
 }

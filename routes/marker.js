@@ -20,7 +20,7 @@ router.get('/markers', async (req, res) => {
     } catch(err){
         return res.status(403).json({err: err.message})
     }
-})
+}) 
  
 router.post('/marker/create', extractToken, verifyToken, async (req, res) => {
     

@@ -18,7 +18,7 @@ const UserSchema = new Schema({
     bookmarks: [{type:Schema.Types.ObjectId, ref: 'marker'}],
     city: {type:String},
     join_date: {type:Date, default:Date.now},
-    imgUrl: {type:String},
+    imgUrl: {type:String, default: "https://i.imgur.com/NcPLMqc.jpg"},
     friends: [{type:Schema.Types.ObjectId, ref: 'user'}],
     friendRequests: [{type:Schema.Types.ObjectId, ref: 'user'}]
 
