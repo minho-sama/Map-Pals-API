@@ -114,10 +114,24 @@ router.patch('/marker/:id/bookmark', extractToken, verifyToken, async (req, res)
  
 router.delete('/marker/:id/delete', extractToken, verifyToken, async (req, res) => {
     try{
-        const deletedMarker = await Marker.findByIdAndDelete(req.params.id)
-        res.status(200).json(deletedMarker)
+        const [marker, comments, personsWhoBookmarked] = await Promise.all([
+            await Marker.findByIdAndDelete(req.params.id),
+            await Comment.deleteMany({marker: req.params.id}),
+            await User.find({bookmarks: req.params.id})
+        ])
+
+        //deleting the markers from the users' bookmark lists
+        personsWhoBookmarked.forEach(async (person) => {
+          person.bookmarks.splice(person.bookmarks.indexOf(req.params.id), 1)
+          await User.updateOne({_id: person._id}, {$set: {
+              bookmarks: person.bookmarks
+          }})
+        })
+
+        res.status(200).json(marker, comments, personsWhoBookmarked)
+
     } catch(err){
-        res.status(403).json({err: err.message})
+        res.status(400).json({err: err.message})
     }
 })
 
