@@ -77,3 +77,6 @@ content-type: application/json
 ### //get all users
 GET http://localhost:3000/users
 
+### //get 1 user
+GET http://localhost:3000/user/6102b53694c0541774d356cd
+

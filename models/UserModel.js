@@ -39,7 +39,8 @@ UserSchema.pre('save', async function(next){
 
 //static method to log in user
 UserSchema.statics.login = async function (username, password) { //no arrow functions because of "this"
-    const user = await this.findOne({username: username}) //if not found, user is undefined
+    const user = await this.findOne({username: username})  //if not found, user is undefined
+                           .populate('friendRequests', 'username')
     if(user){
         console.log(password, user.password)
         const auth = await bcrypt.compare(password, user.password) //returns boolean

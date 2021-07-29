@@ -42,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/', accountRouter);
 app.use('/', authRouter);
-app.use('/', markerRouter); //majd markert berakni elé, és kivenni route-okból
+app.use('/', markerRouter);
 
 
 //media routes for displaying and deleting images (needs to be in app.js)

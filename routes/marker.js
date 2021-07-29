@@ -99,10 +99,6 @@ router.patch('/marker/:id/like', extractToken, verifyToken, async (req, res) => 
 
 router.patch('/marker/:id/bookmark', extractToken, verifyToken, async (req, res) => {
     try{
-        console.log(req.params.id)
-        const findUser = await User.findById(req.params.id)
-        console.log(findUser)
-
         const bookmarkedMarker = await User.updateOne({_id:req.params.id}, {$set:{
             bookmarks:req.body.bookmarks
         }})
