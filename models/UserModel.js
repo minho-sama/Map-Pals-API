@@ -41,6 +41,7 @@ UserSchema.pre('save', async function(next){
 UserSchema.statics.login = async function (username, password) { //no arrow functions because of "this"
     const user = await this.findOne({username: username})  //if not found, user is undefined
                            .populate('friendRequests', 'username')
+                           .populate('friends', 'username')
     if(user){
         console.log(password, user.password)
         const auth = await bcrypt.compare(password, user.password) //returns boolean
@@ -54,7 +55,7 @@ UserSchema.statics.login = async function (username, password) { //no arrow func
     throw Error('incorrect username')
 }
 
-// UserSchema
+// UserSchema 
 //     .virtual('join_date_formatted')
 //     .get(function() {
 //         return DateTime.fromJSDate(this.join_date).toLocaleString(DateTime.DATE_MED)
