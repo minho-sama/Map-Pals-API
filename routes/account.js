@@ -65,7 +65,7 @@ router.patch('/user/:idR/:idS', extractToken, verifyToken, async (req, res) => {
     res.status(400).json({err: err.message})
   }
 })
- 
+
 //uploading image, and returning a file name which was created in the middleware
 router.post('/profile', upload.single("file"), (req, res) => {
   return res.json({file_name: req.file.filename})

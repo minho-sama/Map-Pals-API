@@ -9,14 +9,30 @@ const Comment = require('../models/CommentModel')
 const extractToken = require('../middlewares/extractToken')
 const verifyToken = require('../middlewares/verifyToken')
 
-
-//getting all markers (majd megcsinálni úgy is, h csak friendekre, ne frontenden szűrj!)
-//majd ha lesznek kommentek akkor populatelni!
-//nem kell verification, majd id alapján lesz úgyis
+//getting all markers
 router.get('/markers', async (req, res) => {
     try {
-        const allMarkers = await Marker.find().populate('user', 'username')
+        const allMarkers = await Marker.find()
+                                       .select("-user.password") //not working
+                                       .populate('user')
         return res.status(200).json(allMarkers)
+    } catch(err){
+        return res.status(403).json({err: err.message})
+    }
+}) 
+
+//getting user's friends' markers (and own markers)
+router.get('/markers/user/friends/:id', async (req, res) => {
+    try {
+        //nemm kell populatelni userst -> marker.friends: req.params.id
+        //vagy hagyjad a native mongooset, csak vanilla js filter!
+        const allMarkers = await Marker.find()
+                                       .select("-user.password")
+                                       .populate('user')
+        const friendsMarkers = allMarkers.filter(marker => {
+            return marker.user.friends.includes(req.params.id) || marker.user._id == req.params.id
+        })
+        return res.status(200).json(friendsMarkers)
     } catch(err){
         return res.status(403).json({err: err.message})
     }
@@ -43,7 +59,10 @@ router.post('/marker/create', extractToken, verifyToken, async (req, res) => {
 //get all comments for a marker
 router.get('/marker/:id/comments', async (req, res) => {
     try{
-        const comments = await Comment.find({marker: req.params.id}).populate('user', 'username').sort({post_date:-1})
+        const comments = await Comment.find({marker: req.params.id})
+                                      .select('-password')
+                                      .populate('user')
+                                      .sort({post_date:-1})
         res.status(200).json(comments)
     } catch(err){
         res.status(400).json({err:err.message})

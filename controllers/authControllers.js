@@ -36,11 +36,12 @@ const handleErrorsLogin = (err) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const {username, password} = req.body
+    const {username, password, imgUrl} = req.body
     try{
         const user = await User.create({
             username,
-            password
+            password,
+            imgUrl
         })
         res.status(201).json({user})
     }catch(err){

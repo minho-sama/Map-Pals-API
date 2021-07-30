@@ -23,7 +23,7 @@ const UserSchema = new Schema({
     friendRequests: [{type:Schema.Types.ObjectId, ref: 'user'}]
 
 
-}, opts)
+}, opts)  
 
 UserSchema.post('save', function(doc, next){
     console.log('new user was created and saved', doc)
@@ -40,7 +40,7 @@ UserSchema.pre('save', async function(next){
 //static method to log in user
 UserSchema.statics.login = async function (username, password) { //no arrow functions because of "this"
     const user = await this.findOne({username: username})  //if not found, user is undefined
-                           .populate('friendRequests', 'username')
+                           .populate('friendRequests', 'username') //according to documentation it shouldn't work, but it does
                            .populate('friends', 'username')
     if(user){
         console.log(password, user.password)

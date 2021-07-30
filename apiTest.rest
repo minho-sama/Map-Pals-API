@@ -46,6 +46,9 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6Ij
 ### //fetching markers
 GET http://localhost:3000/markers
 
+### //fetching markers BY FRIEND (and own markers)
+GET http://localhost:3000/markers/user/friends/61045c49d13bcf23a05a0030
+
 ### //deleting marker
 DELETE http://localhost:3000/marker/60fdb668bd7ef724907cf17f/delete HTTP/1.1
 content-type: application/json
@@ -80,3 +83,13 @@ GET http://localhost:3000/users
 ### //get 1 user
 GET http://localhost:3000/user/6102b53694c0541774d356cd
 
+### //accept friend request and sending back updated user
+PATCH  http://localhost:3000/user/61045c49d13bcf23a05a0030/61046c466d816205d8294435 HTTP/1.1
+content-type: application/json
+Authorization: 
+
+{
+    "friendsReceiver" : ["61045d09d13bcf23a05a0046", "6104676609b98f125cef7512", "610469240f0c092820599b00", "61046c466d816205d8294435"],
+    "friendRequestsReceiver" : [],
+    "frinedsSender": ["61045c49d13bcf23a05a0030"]
+}
