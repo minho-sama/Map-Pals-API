@@ -37,6 +37,16 @@ router.get('/markers/user/friends/:id', async (req, res) => {
         return res.status(403).json({err: err.message})
     }
 }) 
+
+//getting markers by user
+router.get('/markers/user/:id', async (req, res) => {
+    try{
+        const userMarkers = await Marker.find({user:req.params.id})
+        return res.status(200).json(userMarkers)
+    }catch(err){
+        return res.status(400).json({err:err.message})
+    }
+})
  
 router.post('/marker/create', extractToken, verifyToken, async (req, res) => {
     
