@@ -15,6 +15,9 @@ const UserSchema = new Schema({
         required:[true, "Please enter a password"],
         minlength:[3, "minimum password length is 3 characters"]
     },
+    bio: {
+        type:String
+    },
     bookmarks: [{type:Schema.Types.ObjectId, ref: 'marker'}],
     city: {type:String},
     join_date: {type:Date, default:Date.now},
@@ -55,11 +58,11 @@ UserSchema.statics.login = async function (username, password) { //no arrow func
     throw Error('incorrect username')
 }
 
-// UserSchema 
-//     .virtual('join_date_formatted')
-//     .get(function() {
-//         return DateTime.fromJSDate(this.join_date).toLocaleString(DateTime.DATE_MED)
-// })
+UserSchema 
+    .virtual('join_date_formatted')
+    .get(function() {
+        return DateTime.fromJSDate(this.join_date).toLocaleString(DateTime.DATE_MED)
+})
 
 const User = mongoose.model('user', UserSchema)
 

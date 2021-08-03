@@ -11,8 +11,13 @@ const accountRouter = require('./routes/account');
 const authRouter = require('./routes/auth');
 const markerRouter = require('./routes/marker');
 
+const compression = require('compression');
+const helmet = require('helmet');
+
 const app = express();
 app.use(cors());
+app.use(compression())
+app.use(helmet());
 
 //Set up mongoose connection
 const mongoose = require('mongoose');

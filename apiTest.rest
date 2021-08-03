@@ -84,7 +84,7 @@ content-type: application/json
 GET http://localhost:3000/users
 
 ### //get 1 user
-GET http://localhost:3000/user/61045c49d13bcf23a05a0030
+GET http://localhost:3000/user/6107f0780510112ef06bb4da
 
 ### //accept friend request and sending back updated user
 PATCH  http://localhost:3000/user/61045c49d13bcf23a05a0030/61046c466d816205d8294435 HTTP/1.1
