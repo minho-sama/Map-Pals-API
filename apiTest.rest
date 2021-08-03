@@ -96,3 +96,18 @@ Authorization:
     "friendRequestsReceiver" : [],
     "frinedsSender": ["61045c49d13bcf23a05a0030"]
 }
+
+//TESTING DEPLOYED VERSION
+### get all markers
+GET https://mappals.herokuapp.com/markers
+
+###update user info
+PATCH http://localhost:3000/user/6107f0780510112ef06bb4da/info HTTP/1.1
+content-type: application/json
+Authorization: 
+
+{
+    "city" : "budapest",
+    "bio" : "i love cookies",
+    "imgUrl":"https://i.imgur.com/WdtMpfl.jpg"
+}

@@ -1,93 +1,30 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/UserModel')
-const upload = require('../middlewares/post_img')
 const extractToken = require('../middlewares/extractToken')
 const verifyToken = require('../middlewares/verifyToken');
-const { response } = require('express');
+const userController = require('../controllers/accountControllers')
 
-router.get('/users', async (req, res) => {
-  try{
-    const users = await User.find().select("-password").populate('friendRequests', 'username')
-    res.status(200).json(users)
-  } catch(err){
-    res.status(400).json({err: err.message})
-  }
-})
+//get all users
+router.get('/users', userController.users_get)
 
-//dont protect this one with auth middlewares!
-router.get('/user/:id', async (req, res) => {
-  try{ 
-    const user = await User.findById(req.params.id)
-                           .select('-password')
-                           .populate('friendRequests', '-password')
-                           .populate('friends', '-password')
-    res.json(user)
-  } catch(err){
-    return res.status(400).json({err: err.message})
-  }
-})
+//get 1 user
+router.get('/user/:id', userController.user_get)
+
+//update user info
+router.patch('/user/:id/info', extractToken, verifyToken, userController.user_patch)
 
 //Send friend request
-router.patch('/user/:id/sendFR', extractToken, verifyToken, async (req, res) => {
-  try{
-    const [updatedUser, user] = await Promise.all([
-      await User.updateOne({_id: req.params.id}, {$set:{
-        friendRequests: req.body.friendRequests
-      }}),
-      await User.findById(req.params.id)
-                .populate('friendRequests', 'username')
-                .populate('friends', 'username')
-    ])
-    res.status(200).json(user)
-  }catch(err){
-    res.status(400).json({err: err.message})
-  }
-})
+router.patch('/user/:id/sendFR', extractToken, verifyToken, userController.friendRequest_send)
 
 //Accept friend request 
 //idReceiver idSender
-router.patch('/user/:idR/:idS', extractToken, verifyToken, async (req, res) => {
-  try{
-    const [updatedR, updatedS, user] = await Promise.all([
-      await User.updateOne({_id: req.params.idR}, {$set:{
-        friends: req.body.friendsReceiver,
-        friendRequests: req.body.friendRequestsReceiver
-      }}),
-      await User.updateOne({_id: req.params.idS}, {$set:{
-        friends: req.body.friendsSender
-      }}),
-      await User.findById(req.params.idR)
-                .populate('friendRequests', 'username')
-                .populate('friends', 'username')
-    ])
-    res.status(200).json(user)
-  } catch(err){
-    res.status(400).json({err: err.message})
-  }
-})
+router.patch('/user/:idR/:idS', extractToken, verifyToken, userController.friendRequest_accept)
 
 //DECLINE friend request 
 //idReceiver idSender
-router.patch('/user/:idR/:idS/decline', extractToken, verifyToken, async (req, res) => {
-  try{
-    const [userDecliner, userDUpdated] = await Promise.all([
-      await User.updateOne({_id: req.params.idR}, {$set:{
-        friendRequests: req.body.friendRequestsReceiver
-      }}),
-      await User.findById(req.params.idR)
-                .populate('friendRequests', 'username')
-                .populate('friends', 'username')
-    ])
-    res.status(200).json(userDUpdated)
-  } catch(err){
-    res.status(400).json({err: err.message})
-  }
-})
+router.patch('/user/:idR/:idS/decline', extractToken, verifyToken, userController.friendRequest_decline)
 
 //uploading image, and returning a file name which was created in the middleware
-router.post('/profile', upload.single("file"), (req, res) => {
-  return res.json({file_name: req.file.filename})
-}) 
+router.post('/profile', upload.single("file"), userController.image_post) 
  
 module.exports = router;
