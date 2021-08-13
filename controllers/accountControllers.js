@@ -1,5 +1,4 @@
 const User = require('../models/UserModel')
-const upload = require('../middlewares/post_img')
 
 module.exports.users_get = async (req, res) => {
     try{

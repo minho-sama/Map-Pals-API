@@ -3,6 +3,7 @@ const router = express.Router();
 const extractToken = require('../middlewares/extractToken')
 const verifyToken = require('../middlewares/verifyToken');
 const userController = require('../controllers/accountControllers')
+const upload = require('../middlewares/post_img')
 
 //get all users
 router.get('/users', userController.users_get)

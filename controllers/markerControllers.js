@@ -12,18 +12,18 @@ module.exports.markers_get = async (req, res) => {
         return res.status(403).json({err: err.message})
     }
 }
-
+ 
 module.exports.markers_get_byFriends = async (req, res) => {
     try {
         const allMarkers = await Marker.find()
                                        .select("-user.password")
                                        .populate('user')
         const friendsMarkers = allMarkers.filter(marker => {
-            return marker.user.friends.includes(req.params.id) || marker.user._id == req.params.id
+            return marker.user.friends?.includes(req.params.id) || marker.user._id == req.params.id
         })
         return res.status(200).json(friendsMarkers)
     } catch(err){
-        return res.status(403).json({err: err.message})
+        return res.status(500).json({err: err.message})
     }
 }
 

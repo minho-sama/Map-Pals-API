@@ -111,3 +111,7 @@ Authorization:
     "bio" : "i love cookies",
     "imgUrl":"https://i.imgur.com/WdtMpfl.jpg"
 }
+
+### 
+GET http://localhost:3000/markers/user/friends/6107f0780510112ef06bb4da
+
