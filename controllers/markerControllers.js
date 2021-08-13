@@ -12,13 +12,12 @@ module.exports.markers_get = async (req, res) => {
         return res.status(403).json({err: err.message})
     }
 }
- 
+  
 module.exports.markers_get_byFriends = async (req, res) => {
     try {
         const allMarkers = await Marker.find()
                                        .select("-user.password")
                                        .populate('user')
-        return res.json(allMarkers)
         const friendsMarkers = allMarkers.filter(marker => {
             return marker.user.friends.includes(req.params.id) || marker.user._id == req.params.id
         })
