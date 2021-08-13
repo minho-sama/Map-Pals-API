@@ -18,8 +18,9 @@ module.exports.markers_get_byFriends = async (req, res) => {
         const allMarkers = await Marker.find()
                                        .select("-user.password")
                                        .populate('user')
+        return res.json(allMarkers)
         const friendsMarkers = allMarkers.filter(marker => {
-            return marker.user.friends?.includes(req.params.id) || marker.user._id == req.params.id
+            return marker.user.friends.includes(req.params.id) || marker.user._id == req.params.id
         })
         return res.status(200).json(friendsMarkers)
     } catch(err){

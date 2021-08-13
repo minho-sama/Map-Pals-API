@@ -16,10 +16,11 @@ const UserSchema = new Schema({
         minlength:[3, "minimum password length is 3 characters"]
     },
     bio: {
-        type:String
+        type:String,
+        default:null
     },
     bookmarks: [{type:Schema.Types.ObjectId, ref: 'marker'}],
-    city: {type:String},
+    city: {type:String, default:null},
     join_date: {type:Date, default:Date.now},
     imgUrl: {type:String, default: "https://i.imgur.com/NcPLMqc.jpg"},
     friends: [{type:Schema.Types.ObjectId, ref: 'user'}],
